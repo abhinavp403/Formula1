@@ -2,9 +2,6 @@ package dev.abhinav.formula1
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -73,14 +70,12 @@ fun CarRow(
             fontSize = 24.sp,
             color = Color.Black,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp)
+            modifier = Modifier.fillMaxWidth()
         )
 
         Image(
             painter = painterResource(carImage),
-            contentDescription = "Mercedes Car",
+            contentDescription = "car",
         )
     }
 }
