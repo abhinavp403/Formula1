@@ -10,5 +10,6 @@ data class Driver (
     val country: String,
     val gpEntered: Int,
     val podiums: Int,
-    val championships: Int
+    val championships: Int,
+    val image: Int
 )

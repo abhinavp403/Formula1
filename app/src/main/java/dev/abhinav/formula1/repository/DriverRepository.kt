@@ -8,4 +8,8 @@ class DriverRepository(private val driverDao: DriverDao) {
     suspend fun addDriver(driver: Driver) {
         driverDao.insertDriver(driver)
     }
+
+    suspend fun getDriverInfo(carName: String) : List<Driver> {
+        return driverDao.getDriversFromCar(carName)
+    }
 }
