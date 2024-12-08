@@ -20,32 +20,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.abhinav.formula1.model.Car
-
-val carList = listOf(
-    Car("Mercedes", R.drawable.mercedes_car),
-    Car("Red Bull", R.drawable.red_bull_car),
-    Car("Ferrari", R.drawable.ferrari_car),
-    Car("McLaren", R.drawable.mclaren_car),
-    Car("Aston Martin", R.drawable.aston_martin_car),
-    Car("Alpine", R.drawable.alpine_car),
-    Car("Williams", R.drawable.williams_car),
-    Car("RB", R.drawable.rb_car),
-    Car("Kick Sauber", R.drawable.kick_sauber_car),
-    Car("Haas", R.drawable.haas_car)
-)
+import dev.abhinav.formula1.model.CarWithDrivers
 
 @Composable
-fun CarsList() {
+fun CarsList(carStateList: List<CarWithDrivers>?) {
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)
     ) {
-        items(carList.size) {
-            CarRow(carList[it].name, carList[it].imageRes)
+        carStateList?.size?.let {
+            items(it) { index ->
+                CarRow(carStateList[index].car.name, carStateList[index].car.image)
+            }
         }
     }
 }
@@ -87,10 +75,4 @@ fun CarRow(
             contentDescription = "car",
         )
     }
-}
-
-@Preview
-@Composable
-fun CarsListPreview() {
-    CarsList()
 }

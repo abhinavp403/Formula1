@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.abhinav.formula1.db.DriverDatabase
+import dev.abhinav.formula1.db.AppDatabase
 import dev.abhinav.formula1.model.Driver
 import dev.abhinav.formula1.repository.DriverRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
@@ -29,7 +29,7 @@ class DriverActivity : ComponentActivity() {
 
         val carName = intent.getStringExtra("car")!!
 
-        val database = DriverDatabase.getInstance(this)
+        val database = AppDatabase.getInstance(this)
         val driverDao = database.driverDao()
         driverRepository = DriverRepository(driverDao)
 

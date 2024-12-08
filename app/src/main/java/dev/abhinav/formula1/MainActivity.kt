@@ -1,6 +1,7 @@
 package dev.abhinav.formula1
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -18,12 +19,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import dev.abhinav.formula1.db.DriverDatabase
+import dev.abhinav.formula1.db.AppDatabase
+import dev.abhinav.formula1.model.Car
+import dev.abhinav.formula1.model.CarWithDrivers
 import dev.abhinav.formula1.model.Driver
+import dev.abhinav.formula1.repository.CarRepository
 import dev.abhinav.formula1.repository.DriverRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
 import kotlinx.coroutines.launch
@@ -31,6 +36,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     private lateinit var driverRepository: DriverRepository
+    private lateinit var carRepository: CarRepository
 
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,9 +50,22 @@ class MainActivity : ComponentActivity() {
             )
         )
 
-        val database = DriverDatabase.getInstance(this)
+        val database = AppDatabase.getInstance(this)
         val driverDao = database.driverDao()
+        val carDao = database.carDao()
         driverRepository = DriverRepository(driverDao)
+        carRepository = CarRepository(carDao)
+
+        // Map the grouped drivers to the corresponding cars
+        val groupedDrivers = drivers.groupBy { it.team }
+        val updatedCarList = cars.map { car ->
+            car.also { it.drivers = groupedDrivers[car.name].orEmpty() }
+        }
+
+        lifecycleScope.launch {
+            carRepository.addCars(updatedCarList)
+            carRepository.addDrivers(drivers)
+        }
 
         lifecycleScope.launch {
             drivers.forEach {
@@ -62,6 +81,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     var selectedTabIndex by remember { mutableIntStateOf (0) }
                     val pagerState = rememberPagerState { tabItems.size }
+                    val carStateList = remember { mutableStateOf<List<CarWithDrivers>?>(null) }
 
                     LaunchedEffect(selectedTabIndex) {
                         pagerState.animateScrollToPage(selectedTabIndex)
@@ -69,6 +89,11 @@ class MainActivity : ComponentActivity() {
 
                     LaunchedEffect(pagerState.currentPage) {
                         selectedTabIndex = pagerState.currentPage
+                    }
+
+                    LaunchedEffect(Unit) {
+                        val result = carRepository.getAllCarsWithDrivers()
+                        carStateList.value = result
                     }
 
                     Column(
@@ -96,7 +121,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.fillMaxSize(),
                             ) {
                                 if(index == 0) {
-                                    CarsList()
+                                    CarsList(carStateList.value)
                                 } else {
                                     CircuitsList()
                                 }
@@ -134,4 +159,17 @@ val drivers = listOf(
     Driver("Yuki Tsunoda", "RB", "Japan", 88, 309, 0, R.drawable.tsunoda),
     Driver("Max Verstappen", "Red Bull", "Netherlands", 207, 111, 4, R.drawable.verstappen),
     Driver("Zhou Guanyu", "Kick Sauber", "China", 66, 0, 0, R.drawable.zhou)
+)
+
+val cars = listOf(
+    Car("Mercedes", R.drawable.mercedes_car),
+    Car("Red Bull", R.drawable.red_bull_car),
+    Car("Ferrari", R.drawable.ferrari_car),
+    Car("McLaren", R.drawable.mclaren_car),
+    Car("Aston Martin", R.drawable.aston_martin_car),
+    Car("Alpine", R.drawable.alpine_car),
+    Car("Williams", R.drawable.williams_car),
+    Car("RB", R.drawable.rb_car),
+    Car("Kick Sauber", R.drawable.kick_sauber_car),
+    Car("Haas", R.drawable.haas_car)
 )
