@@ -1,19 +1,19 @@
 package dev.abhinav.formula1
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,9 +52,7 @@ val circuitList = listOf(
 
 @Composable
 fun CircuitsList() {
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(8.dp)
+    LazyColumn(modifier = Modifier.fillMaxSize()
     ) {
         items(circuitList.size) {
             CircuitRow(circuitList[it].name, circuitList[it].imageRes)
@@ -68,16 +66,13 @@ fun CircuitRow(
     circuitImage: Int
 ) {
     Card(
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
-        border = BorderStroke(2.dp, Color.White),
+        shape = RectangleShape,
         modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize()
-            .padding(16.dp)
+            .height(400.dp)
+            .padding(16.dp),
     ) {
         Text(
             text = circuitName,
@@ -91,6 +86,8 @@ fun CircuitRow(
         Image(
             painter = painterResource(circuitImage),
             contentDescription = "circuit",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
