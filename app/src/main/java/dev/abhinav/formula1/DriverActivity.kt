@@ -16,13 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.abhinav.formula1.db.AppDatabase
-import dev.abhinav.formula1.model.Driver
-import dev.abhinav.formula1.repository.DriverRepository
+import dev.abhinav.formula1.model.CarWithDrivers
+import dev.abhinav.formula1.repository.CarRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
 
 class DriverActivity : ComponentActivity() {
 
-    private lateinit var driverRepository: DriverRepository
+    private lateinit var carRepository: CarRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +30,8 @@ class DriverActivity : ComponentActivity() {
         val carName = intent.getStringExtra("car")!!
 
         val database = AppDatabase.getInstance(this)
-        val driverDao = database.driverDao()
-        driverRepository = DriverRepository(driverDao)
+        val carDao = database.carDao()
+        carRepository = CarRepository(carDao)
 
         setContent {
             Formula1Theme {
@@ -39,18 +39,16 @@ class DriverActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val driverInfo = remember { mutableStateOf<List<Driver>?>(null) }
+                    val driverInfoList = remember { mutableStateOf<CarWithDrivers?>(null) }
 
                     LaunchedEffect(carName) {
-                        val result = driverRepository.getDriverInfo(carName)
-                        driverInfo.value = result
+                        driverInfoList.value = carRepository.getDriverInfo(carName)
                     }
 
-                    if (driverInfo.value == null) {
+                    if (driverInfoList.value == null) {
                         LoadingIndicator()
-                    } else if (driverInfo.value!!.isNotEmpty()) {
-                        //DriverInfo(driverInfo.value!![0])
-                        DriverInfo(driverInfo.value!!)
+                    } else if (driverInfoList.value?.drivers!!.isNotEmpty()) {
+                        DriverInfo(driverInfoList.value!!.drivers)
                     } else {
                         Text("No driver information found for $carName.")
                     }

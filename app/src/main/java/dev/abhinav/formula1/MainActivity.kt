@@ -29,13 +29,11 @@ import dev.abhinav.formula1.model.Car
 import dev.abhinav.formula1.model.CarWithDrivers
 import dev.abhinav.formula1.model.Driver
 import dev.abhinav.formula1.repository.CarRepository
-import dev.abhinav.formula1.repository.DriverRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var driverRepository: DriverRepository
     private lateinit var carRepository: CarRepository
 
     @OptIn(ExperimentalFoundationApi::class)
@@ -51,9 +49,7 @@ class MainActivity : ComponentActivity() {
         )
 
         val database = AppDatabase.getInstance(this)
-        val driverDao = database.driverDao()
         val carDao = database.carDao()
-        driverRepository = DriverRepository(driverDao)
         carRepository = CarRepository(carDao)
 
         // Map the grouped drivers to the corresponding cars
@@ -65,12 +61,6 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             carRepository.addCars(updatedCarList)
             carRepository.addDrivers(drivers)
-        }
-
-        lifecycleScope.launch {
-            drivers.forEach {
-                driverRepository.addDriver(it)
-            }
         }
 
         setContent {
@@ -92,8 +82,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     LaunchedEffect(Unit) {
-                        val result = carRepository.getAllCarsWithDrivers()
-                        carStateList.value = result
+                        carStateList.value = carRepository.getAllCarsWithDrivers()
                     }
 
                     Column(

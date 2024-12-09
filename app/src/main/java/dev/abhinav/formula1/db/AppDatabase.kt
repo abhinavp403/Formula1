@@ -10,8 +10,6 @@ import dev.abhinav.formula1.model.Driver
 @Database(entities = [Car::class, Driver::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
-    abstract fun driverDao(): DriverDao
-
     abstract fun carDao(): CarDao
 
     companion object {

@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.abhinav.formula1.model.Driver
 
@@ -39,9 +38,9 @@ val headers = listOf("Name", "Team", "Country", "GP Entered", "Podiums")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DriverInfo(
-    driver: List<Driver>
+    drivers: List<Driver>
 ) {
-    val pagerState = rememberPagerState(initialPage = 0) { driver.size }
+    val pagerState = rememberPagerState(initialPage = 0) { drivers.size }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,7 +48,7 @@ fun DriverInfo(
         modifier = Modifier.fillMaxSize()
     ) {
         PageIndicator(
-            pageCount = driver.size,
+            pageCount = drivers.size,
             currentPage = pagerState.currentPage,
         )
 
@@ -67,7 +66,7 @@ fun DriverInfo(
                         elevation = CardDefaults.elevatedCardElevation(4.dp)
                     ) {
                         Image(
-                            painter = painterResource(driver[currentPage].image),
+                            painter = painterResource(drivers[currentPage].image),
                             contentDescription = "driver",
                             modifier = Modifier.padding(32.dp)
                         )
@@ -78,11 +77,11 @@ fun DriverInfo(
                             items(headers.size) { index ->
 
                                 val data = when (index) {
-                                    0 -> driver[currentPage].name
-                                    1 -> driver[currentPage].team
-                                    2 -> driver[currentPage].country
-                                    3 -> driver[currentPage].gpEntered.toString()
-                                    4 -> driver[currentPage].podiums.toString()
+                                    0 -> drivers[currentPage].name
+                                    1 -> drivers[currentPage].team
+                                    2 -> drivers[currentPage].country
+                                    3 -> drivers[currentPage].gpEntered.toString()
+                                    4 -> drivers[currentPage].podiums.toString()
                                     else -> ""
                                 }
                                 Row(
@@ -145,10 +144,4 @@ fun IndicatorDots(isSelected: Boolean) {
         .clip(CircleShape)
         .background(if (isSelected) Color.Gray else Color.Black)
     )
-}
-
-@Preview
-@Composable
-fun DriverInfoPreview() {
-    DriverInfo(listOf( Driver("","","", 0, 0, 0, 0)))
 }

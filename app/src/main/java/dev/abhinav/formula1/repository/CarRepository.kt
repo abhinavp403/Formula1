@@ -18,4 +18,8 @@ class CarRepository(private val carDao: CarDao) {
     suspend fun getAllCarsWithDrivers() : List<CarWithDrivers> {
         return carDao.getAllCarsWithDrivers()
     }
+
+    suspend fun getDriverInfo(carName: String) : CarWithDrivers {
+        return carDao.getCarWithDrivers(carName)
+    }
 }
