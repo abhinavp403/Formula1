@@ -1,7 +1,6 @@
 package dev.abhinav.formula1
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -27,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import dev.abhinav.formula1.db.AppDatabase
 import dev.abhinav.formula1.model.Car
 import dev.abhinav.formula1.model.CarWithDrivers
+import dev.abhinav.formula1.model.Circuit
 import dev.abhinav.formula1.model.Driver
 import dev.abhinav.formula1.repository.CarRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             carRepository.addCars(updatedCarList)
             carRepository.addDrivers(drivers)
+            carRepository.addCircuits(circuitList2)
         }
 
         setContent {
@@ -112,7 +113,7 @@ class MainActivity : ComponentActivity() {
                                 if(index == 0) {
                                     CarsList(carStateList.value)
                                 } else {
-                                    CircuitsList()
+                                    CircuitsList(carRepository)
                                 }
                             }
                         }
@@ -136,7 +137,7 @@ val drivers = listOf(
     Driver("Lewis Hamilton", "Mercedes", "United Kingdom", 354, 202, 7, R.drawable.hamilton),
     Driver("Nico Hulkenberg", "Haas", "Germany", 228, 0, 0, R.drawable.hulkenberg),
     Driver("Liam Lawson", "RB", "New Zealand", 9, 0, 0, R.drawable.lawson),
-    Driver("Charles LeClerc", "Ferrari", "Monaco", 147, 41, 0, R.drawable.leclerc),
+    Driver("Charles Leclerc", "Ferrari", "Monaco", 147, 41, 0, R.drawable.leclerc),
     Driver("Kevin Magnussen", "Haas", "Denmark", 184, 1, 0, R.drawable.magnussen),
     Driver("Lando Norris", "McLaren", "United Kingdom", 126, 25, 0, R.drawable.norris),
     Driver("Esteban Ocon", "Alpine", "France", 155, 4, 0, R.drawable.ocon),
@@ -161,4 +162,31 @@ val cars = listOf(
     Car("RB", R.drawable.rb_car),
     Car("Kick Sauber", R.drawable.kick_sauber_car),
     Car("Haas", R.drawable.haas_car)
+)
+
+val circuitList2 = listOf(
+    Circuit("Bahrain", R.drawable.bahrain_circuit, "Max Verstappen", "Sergio Perez", "Carlos Sainz"),
+    Circuit("Jeddah", R.drawable.jeddah_circuit, "Max Verstappen", "Sergio Perez", "Charles Leclerc"),
+    Circuit("Melbourne Street", R.drawable.melbourne_circuit, "Carlos Sainz", "Charles Leclerc", "Lando Norris"),
+    Circuit("Suzuka", R.drawable.suzuka_circuit, "Max Verstappen", "Sergio Perez", "Carlos Sainz"),
+    Circuit("Shanghai", R.drawable.shanghai_circuit, "Max Verstappen", "Lando Norris", "Sergio Perez"),
+    Circuit("Miami", R.drawable.miami_circuit, "Lando Norris","Max Verstappen", "Charles Leclerc"),
+    Circuit("Imola", R.drawable.imola_circuit, "Max Verstappen", "Lando Norris", "Charles Leclerc"),
+    Circuit("Monte Carlo", R.drawable.monte_carlo_circuit, "Charles Leclerc", "Oscar Piastri", "Carlos Sainz"),
+    Circuit("Gilles Villeneuve", R.drawable.montreal_circuit, "Max Verstappen", "Lando Norris", "George Russell"),
+    Circuit("Barcelona", R.drawable.barcelona_circuit, "Max Verstappen", "Lando Norris", "Lewis Hamilton"),
+    Circuit("Red Bull Ring", R.drawable.spielberg_circuit, "George Russell", "Oscar Piastri", "Carlos Sainz"),
+    Circuit("Silverstone", R.drawable.silverstone_circuit, "Lewis Hamilton", "Max Verstappen", "Lando Norris"),
+    Circuit("Hungaroring", R.drawable.hungaroring_circuit, "Oscar Piastri", "Lando Norris", "Lewis Hamilton"),
+    Circuit("Spa-Francorchamps", R.drawable.spa_circuit, "Lewis Hamilton", "Oscar Piastri", "Charles Leclerc"),
+    Circuit("Zandvoort", R.drawable.zandvoort_circuit, "Lando Norris", "Max Verstappen", "Charles Leclerc"),
+    Circuit("Monza", R.drawable.monza_circuit, "Charles Leclerc", "Oscar Piastri", "Lando Norris"),
+    Circuit("Baku Street", R.drawable.baku_circuit, "Oscar Piastri", "Charles Leclerc", "George Russell"),
+    Circuit("Marina Bay Street", R.drawable.marina_bay_circuit, "Lando Norris", "Max Verstappen", "Oscar Piastri"),
+    Circuit("Circuit Of The Americas", R.drawable.austin_circuit, "Charles Leclerc", "Carlos Sainz", "Max Verstappen"),
+    Circuit("Mexico City", R.drawable.mexico_city_circuit, "Carlos Sainz", "Lando Norris", "Charles Leclerc"),
+    Circuit("Sao Paulo", R.drawable.sao_paulo_circuit, "Max Verstappen", "Esteban Ocon", "Pierre Gasly"),
+    Circuit("Las Vegas", R.drawable.las_vegas_circuit, "George Russell", "Lewis Hamilton", "Carlos Sainz"),
+    Circuit("Losail", R.drawable.qatar_circuit, "Max Verstappen", "Charles Leclerc", "Oscar Piastri"),
+    Circuit("Yas Marina", R.drawable.abu_dhabi_circuit, "Lando Norris", "Carlos Sainz", "Charles Leclerc")
 )
