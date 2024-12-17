@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             carRepository.addCars(updatedCarList)
             carRepository.addDrivers(drivers)
-            carRepository.addCircuits(circuitList2)
+            carRepository.addCircuits(circuitList)
         }
 
         setContent {
@@ -164,7 +164,7 @@ val cars = listOf(
     Car("Haas", R.drawable.haas_car)
 )
 
-val circuitList2 = listOf(
+val circuitList = listOf(
     Circuit("Bahrain", R.drawable.bahrain_circuit, "Max Verstappen", "Sergio Perez", "Carlos Sainz"),
     Circuit("Jeddah", R.drawable.jeddah_circuit, "Max Verstappen", "Sergio Perez", "Charles Leclerc"),
     Circuit("Melbourne Street", R.drawable.melbourne_circuit, "Carlos Sainz", "Charles Leclerc", "Lando Norris"),

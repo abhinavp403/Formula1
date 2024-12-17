@@ -4,6 +4,7 @@ import dev.abhinav.formula1.db.CarDao
 import dev.abhinav.formula1.model.Car
 import dev.abhinav.formula1.model.CarWithDrivers
 import dev.abhinav.formula1.model.Circuit
+import dev.abhinav.formula1.model.CircuitWithDrivers
 import dev.abhinav.formula1.model.Driver
 
 class CarRepository(private val carDao: CarDao) {
@@ -26,5 +27,9 @@ class CarRepository(private val carDao: CarDao) {
 
     suspend fun getDriverInfo(carName: String) : CarWithDrivers {
         return carDao.getCarWithDrivers(carName)
+    }
+
+    suspend fun getDriverFromCircuit(circuitName: String) : CircuitWithDrivers {
+        return carDao.getDriverFromCircuit(circuitName)
     }
 }
