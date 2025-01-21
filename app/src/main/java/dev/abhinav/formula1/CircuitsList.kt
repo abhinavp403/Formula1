@@ -6,11 +6,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import dev.abhinav.formula1.model.Driver
 import dev.abhinav.formula1.repository.CarRepository
 import kotlinx.coroutines.launch
@@ -68,8 +71,8 @@ fun CircuitRow(
 
     Box(
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize().padding(8.dp),
+        contentAlignment = Alignment.TopCenter
     ) {
         Card(
             colors = CardDefaults.cardColors(
@@ -109,12 +112,15 @@ fun CircuitRow(
         AnimatedVisibility(
             visible = isOverlayVisible,
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
+            exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+            modifier = Modifier
+                .zIndex(1f)
+                .clickable { isOverlayVisible = false }
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable { isOverlayVisible = false },
+                    .background(Color.Black.copy(alpha = 0.5f)),
                 contentAlignment = Alignment.Center
             ) {
                 Card(
