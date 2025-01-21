@@ -71,4 +71,7 @@ dependencies {
     //Room
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    //Palette
+    implementation(libs.androidx.palette)
 }

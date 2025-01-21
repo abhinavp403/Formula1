@@ -1,5 +1,6 @@
 package dev.abhinav.formula1
 
+import android.graphics.BitmapFactory
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -25,12 +26,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.palette.graphics.Palette
 import dev.abhinav.formula1.model.Driver
 
 val headers = listOf("Name", "Team", "Country", "GP Entered", "Podiums")
@@ -41,11 +48,19 @@ fun DriverInfo(
     drivers: List<Driver>
 ) {
     val pagerState = rememberPagerState(initialPage = 0) { drivers.size }
+    val context = LocalContext.current
+    val dominantColor = remember { mutableStateOf(Color.Black) }
+
+    LaunchedEffect(Unit) {
+        val imageBitmap = BitmapFactory.decodeResource(context.resources, drivers[0].image)
+        val palette = Palette.from(imageBitmap).generate()
+        dominantColor.value = Color(palette.getDominantColor(Color.Black.toArgb()))
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(dominantColor.value)
     ) {
         PageIndicator(
             pageCount = drivers.size,
