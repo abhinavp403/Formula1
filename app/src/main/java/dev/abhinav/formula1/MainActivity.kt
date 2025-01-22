@@ -3,7 +3,6 @@ package dev.abhinav.formula1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import dev.abhinav.formula1.db.AppDatabase
 import dev.abhinav.formula1.model.Car
 import dev.abhinav.formula1.model.CarWithDrivers
 import dev.abhinav.formula1.model.Circuit
@@ -31,12 +29,12 @@ import dev.abhinav.formula1.model.Driver
 import dev.abhinav.formula1.repository.CarRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var carRepository: CarRepository
+    private val carRepository: CarRepository by inject()
 
-    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val tabItems = listOf(
@@ -47,10 +45,6 @@ class MainActivity : ComponentActivity() {
                 title = "Circuit",
             )
         )
-
-        val database = AppDatabase.getInstance(this)
-        val carDao = database.carDao()
-        carRepository = CarRepository(carDao)
 
         // Map the grouped drivers to the corresponding cars
         val groupedDrivers = drivers.groupBy { it.team }

@@ -15,23 +15,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.abhinav.formula1.db.AppDatabase
 import dev.abhinav.formula1.model.CarWithDrivers
 import dev.abhinav.formula1.repository.CarRepository
 import dev.abhinav.formula1.ui.theme.Formula1Theme
+import org.koin.android.ext.android.inject
 
 class DriverActivity : ComponentActivity() {
 
-    private lateinit var carRepository: CarRepository
+    private val carRepository: CarRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val carName = intent.getStringExtra("car")!!
-
-        val database = AppDatabase.getInstance(this)
-        val carDao = database.carDao()
-        carRepository = CarRepository(carDao)
 
         setContent {
             Formula1Theme {
