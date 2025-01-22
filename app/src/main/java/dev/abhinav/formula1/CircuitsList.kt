@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,13 +43,14 @@ import androidx.compose.ui.zIndex
 import dev.abhinav.formula1.model.Driver
 import dev.abhinav.formula1.repository.CarRepository
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Composable
-fun CircuitsList(carRepository: CarRepository) {
+fun CircuitsList() {
     LazyColumn(modifier = Modifier.fillMaxSize()
     ) {
         items(circuitList.size) {
-            CircuitRow(circuitList[it].name, circuitList[it].imageRes, carRepository)
+            CircuitRow(circuitList[it].name, circuitList[it].imageRes)
         }
     }
 }
@@ -59,7 +59,6 @@ fun CircuitsList(carRepository: CarRepository) {
 fun CircuitRow(
     circuitName: String,
     circuitImage: Int,
-    carRepository: CarRepository
 ) {
     var isOverlayVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -68,6 +67,7 @@ fun CircuitRow(
     var thirdPlaceDriver by remember { mutableStateOf<Driver?>(null) }
     var driver by remember { mutableStateOf<Driver?>(null) }
     var trophyImage by remember { mutableIntStateOf(0) }
+    val carRepository = koinInject<CarRepository>()
 
     Box(
         modifier = Modifier

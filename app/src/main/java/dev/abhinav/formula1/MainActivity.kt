@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
                                 if(index == 0) {
                                     CarsList(carStateList.value)
                                 } else {
-                                    CircuitsList(carRepository)
+                                    CircuitsList()
                                 }
                             }
                         }
