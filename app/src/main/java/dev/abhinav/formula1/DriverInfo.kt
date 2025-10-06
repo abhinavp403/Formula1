@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -71,7 +72,7 @@ fun DriverInfo(
             modifier = Modifier.wrapContentSize(),
             contentAlignment = Alignment.Center
         ) {
-            CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
+            CompositionLocalProvider(LocalOverscrollFactory provides null) {
                 HorizontalPager(
                     state = pagerState,
                     contentPadding = PaddingValues(horizontal = 24.dp)
