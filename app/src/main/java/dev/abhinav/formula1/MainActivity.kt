@@ -3,10 +3,13 @@ package dev.abhinav.formula1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +39,7 @@ class MainActivity : ComponentActivity() {
     private val carRepository: CarRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         val tabItems = listOf(
             TabItem(
@@ -61,8 +65,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Formula1Theme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).systemBarsPadding()
                 ) {
                     var selectedTabIndex by remember { mutableIntStateOf (0) }
                     val pagerState = rememberPagerState { tabItems.size }
