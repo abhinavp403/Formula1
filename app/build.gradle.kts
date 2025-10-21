@@ -48,6 +48,12 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/proguard/arcore.pro"
+        }
+    }
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("src/main/assets")
         }
     }
 }
@@ -85,4 +91,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.compose)
     implementation(libs.koin.compose.viewmodel)
+
+    implementation(libs.ar.core)
+    implementation(libs.arsceneview)
 }
